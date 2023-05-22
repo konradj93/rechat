@@ -1,7 +1,8 @@
 import { BaseLayout } from "../../../Common/views/BaseLayout/BaseLaout"
+import { AddTaskForm } from "../../components/AddTaskForm"
 
 export const TaskInitialView = () => {
     return <BaseLayout>
-        <h1>Hello Rechat</h1>
+       <AddTaskForm />
     </BaseLayout>
 }
