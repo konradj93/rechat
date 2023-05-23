@@ -25,6 +25,7 @@ export const AddTaskForm = () => {
     register,
     handleSubmit,
     formState: { errors, isValid },
+    reset,
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
@@ -32,6 +33,7 @@ export const AddTaskForm = () => {
 
   const onSubmit = (data: FormData) => {
     addTask(data);
+    reset();
   };
 
   return (

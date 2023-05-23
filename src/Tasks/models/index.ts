@@ -7,9 +7,8 @@ export interface TaskBase {
   created: string;
 }
 export interface Task extends TaskBase {
-  history?: TaskDiff[];
+  history: TaskDiff[];
 }
-
 export interface TaskDiff
   extends Partial<Pick<TaskBase, 'title' | 'description' | 'status'>> {
   changed: string;

@@ -9,12 +9,12 @@ import {
   Typography,
 } from '@mui/material';
 import { FC } from 'react';
-import { TaskBase } from '../../models';
 import { useNavigate } from 'react-router-dom';
 import { TaskStatusSelectButton } from '../TaskStatusSelectButton';
+import { Task } from '../../models';
 
 interface SingleTaskProp {
-  task: TaskBase;
+  task: Task;
 }
 
 export const SingleTask: FC<SingleTaskProp> = ({ task }) => {

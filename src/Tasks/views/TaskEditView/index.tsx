@@ -1,7 +1,16 @@
 import { useNavigate, useParams } from 'react-router-dom';
 import { BaseLayout } from '../../../Common/views/BaseLayout/BaseLaout';
 import { EditTaskForm } from '../../components/EditTaskForm';
-import { CircularProgress } from '@mui/material';
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  CircularProgress,
+  Container,
+  Typography,
+} from '@mui/material';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import { useTaskContext } from '../../context';
 
 export const TaskEditView = () => {
@@ -13,7 +22,18 @@ export const TaskEditView = () => {
   if (!task) return <CircularProgress />;
   return (
     <BaseLayout>
-      <EditTaskForm task={task} onCancel={() => navigate('/')} />
+      <Container maxWidth="md" style={{ marginTop: '32px' }}>
+        <EditTaskForm task={task} backAction={() => navigate('/')} />
+        <Accordion style={{ marginTop: '32px' }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            aria-controls="panel1a-content"
+            id="panel1a-header">
+            <Typography>View history</Typography>
+          </AccordionSummary>
+          <AccordionDetails>{JSON.stringify(task.history)}</AccordionDetails>
+        </Accordion>
+      </Container>
     </BaseLayout>
   );
 };
