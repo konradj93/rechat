@@ -39,6 +39,12 @@ export const TaskProvider: FC<{ children: ReactNode }> = ({ children }) => {
       description,
       status: TaskStatus.ToDo,
       created: new Date().toISOString(),
+      history: [
+        {
+          changed: new Date().toISOString(),
+          status: TaskStatus.ToDo,
+        },
+      ],
     };
     setTasks([...tasks, newTask]);
   };
@@ -48,12 +54,29 @@ export const TaskProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setTasks((prevTasks) =>
       prevTasks.map((task) => {
         if (task.id === id) {
-          return {
-            ...task,
-            title,
-            description,
-            status,
-          };
+          const updatedFields: Partial<Task> = {};
+          if (task.title !== title) {
+            updatedFields.title = title;
+          }
+          if (task.description !== description) {
+            updatedFields.description = description;
+          }
+          if (task.status !== status) {
+            updatedFields.status = status;
+          }
+          if (Object.keys(updatedFields).length > 0) {
+            return {
+              ...task,
+              ...updatedFields,
+              history: [
+                ...task.history,
+                {
+                  ...updatedFields,
+                  changed: new Date().toISOString(),
+                },
+              ],
+            };
+          }
         }
         return task;
       }),

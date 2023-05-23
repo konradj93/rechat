@@ -8,12 +8,12 @@ import {
 } from '@mui/material';
 import { FC, useId } from 'react';
 import { TaskStatus } from '../../models/enums';
-import { TaskBase } from '../../models';
+import { Task } from '../../models';
 import { getAvailableStatuses } from '../../logic';
 import { useHandleTaskStatusSelectButton } from '../../hooks/useHandleTaskStatusSelectButton';
 
 interface TaskStatusSelectButtonProps {
-  task: TaskBase;
+  task: Task;
 }
 
 export const TaskStatusSelectButton: FC<TaskStatusSelectButtonProps> = ({

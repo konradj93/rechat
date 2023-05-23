@@ -1,9 +1,10 @@
 import { Breadcrumbs, Typography } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { Link as RouterLink } from 'react-router-dom';
+import { Link as RouterLink, useParams } from 'react-router-dom';
 import Link from '@mui/material/Link';
 
 export const AppNavigation = () => {
+  const { id } = useParams();
   return (
     <Breadcrumbs
       separator={<NavigateNextIcon fontSize="small" />}
@@ -14,6 +15,11 @@ export const AppNavigation = () => {
       }}>
       <Link component={RouterLink} to="/" underline="hover" color="white">
         <Typography color="white">Task manager</Typography>
+      </Link>
+      <Link key="1" href={!id ? '/' : `/${id}/edit`}>
+        <Typography color="primary.contrastText">
+          {!id ? 'Home' : 'Edit'}
+        </Typography>
       </Link>
     </Breadcrumbs>
   );

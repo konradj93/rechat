@@ -5,7 +5,6 @@ import {
   TextField,
   Button,
   Typography,
-  Container,
   Box,
   Select,
   MenuItem,
@@ -30,7 +29,7 @@ interface FormData {
 
 interface EditTaskFormProps {
   task: Task;
-  onCancel: () => void;
+  backAction: () => void;
 }
 
 const schema = yup.object().shape({
@@ -48,7 +47,7 @@ const schema = yup.object().shape({
 const SELECT_LABEL_ID = 'select-status';
 
 export const EditTaskForm = React.memo(
-  ({ task, onCancel }: EditTaskFormProps) => {
+  ({ task, backAction }: EditTaskFormProps) => {
     const [editedTask, setEditedTask] = useState<Task>(task);
     const isDisabled = task.status === TaskStatus.Deployed;
     const { updateTask } = useTaskContext();
@@ -56,6 +55,7 @@ export const EditTaskForm = React.memo(
       register,
       handleSubmit,
       formState: { errors, isDirty, isValid },
+      setValue,
     } = useForm<FormData>({
       resolver: yupResolver(schema),
       defaultValues: {
@@ -70,6 +70,7 @@ export const EditTaskForm = React.memo(
         ...prevTask,
         status,
       }));
+      setValue('status', status, { shouldDirty: true });
     };
 
     const onSubmit = (data: FormData) => {
@@ -80,74 +81,73 @@ export const EditTaskForm = React.memo(
         status: data.status,
       };
       updateTask(updatedTask);
+      backAction();
     };
     return (
-      <Container maxWidth="md" style={{ marginTop: '32px' }}>
-        <Box
-          component="form"
-          noValidate
-          autoComplete="off"
-          display="flex"
-          flexDirection="column"
-          gap={1}
-          onSubmit={handleSubmit(onSubmit)}>
-          <Typography variant="h5" component="h5">
-            Edit Task
-          </Typography>
-          <TextField
-            label="Title"
-            variant="filled"
-            {...register('title')}
-            error={!!errors.title}
-            helperText={errors.title?.message}
-            disabled={isDisabled}
-          />
-          <TextField
-            label="Description"
-            multiline
-            variant="filled"
-            rows={20}
-            {...register('description')}
-            error={!!errors.description}
-            helperText={errors.description?.message}
-            disabled={isDisabled}
-          />
-          <FormControl variant="filled" disabled={isDisabled}>
-            <InputLabel id={SELECT_LABEL_ID}>Status</InputLabel>
-            <Select
-              label="Status"
-              {...register('status')}
-              labelId={SELECT_LABEL_ID}
-              error={!!errors.status}
-              defaultValue={editedTask.status}
-              onChange={handleStatusChange}>
-              {getAvailableStatuses(editedTask.status).map((status) => (
-                <MenuItem key={status} value={status}>
-                  {status}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-          <Box display="flex" gap={2}>
-            <Button
-              type="submit"
-              variant="contained"
-              size="large"
-              startIcon={<BorderColorIcon />}
-              fullWidth
-              disabled={!isDirty || !isValid}>
-              Edit
-            </Button>
-            <Button
-              variant="outlined"
-              size="large"
-              onClick={onCancel}
-              fullWidth>
-              Cancel
-            </Button>
-          </Box>
+      <Box
+        component="form"
+        noValidate
+        autoComplete="off"
+        display="flex"
+        flexDirection="column"
+        gap={1}
+        onSubmit={handleSubmit(onSubmit)}>
+        <Typography variant="h5" component="h5">
+          Edit Task
+        </Typography>
+        <TextField
+          label="Title"
+          variant="filled"
+          {...register('title')}
+          error={!!errors.title}
+          helperText={errors.title?.message}
+          disabled={isDisabled}
+        />
+        <TextField
+          label="Description"
+          multiline
+          variant="filled"
+          rows={20}
+          {...register('description')}
+          error={!!errors.description}
+          helperText={errors.description?.message}
+          disabled={isDisabled}
+        />
+        <FormControl variant="filled" disabled={isDisabled}>
+          <InputLabel id={SELECT_LABEL_ID}>Status</InputLabel>
+          <Select
+            label="Status"
+            {...register('status')}
+            labelId={SELECT_LABEL_ID}
+            error={!!errors.status}
+            value={editedTask.status ?? ''}
+            onChange={handleStatusChange}>
+            {getAvailableStatuses(editedTask.status).map((status) => (
+              <MenuItem key={status} value={status}>
+                {status}
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Box display="flex" gap={2}>
+          <Button
+            type="submit"
+            variant="contained"
+            size="large"
+            startIcon={<BorderColorIcon />}
+            fullWidth
+            disabled={!isDirty || !isValid}>
+            Edit
+          </Button>
+          <Button
+            variant="outlined"
+            size="large"
+            onClick={backAction}
+            fullWidth>
+            Cancel
+          </Button>
         </Box>
-      </Container>
+      </Box>
     );
   },
 );
