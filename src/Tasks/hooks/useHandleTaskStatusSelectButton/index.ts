@@ -1,18 +1,17 @@
 import { SelectChangeEvent } from '@mui/material';
 import { useState } from 'react';
-import { useAppDispatch } from '../../../App/hooks/redux';
 import { Task } from '../../models';
 import { TaskStatus } from '../../models/enums';
-import { updateTask } from '../../store';
+import { useTaskContext } from '../../context';
 
 export const useHandleTaskStatusSelectButton = (task: Task) => {
   const [userChangingStatus, setUserIsChangingStatus] = useState(false);
   const { status } = task;
-  const dispatch = useAppDispatch();
+  const { updateTask } = useTaskContext();
 
   const onStatusChange = (e: SelectChangeEvent<TaskStatus>) => {
     const value = e.target.value as TaskStatus;
-    dispatch(updateTask({ ...task, status: value }));
+    updateTask({ ...task, status: value });
     setUserIsChangingStatus(false);
   };
 
