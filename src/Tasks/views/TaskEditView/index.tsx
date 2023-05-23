@@ -12,6 +12,7 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
 import { useTaskContext } from '../../context';
+import { useEffect } from 'react';
 
 export const TaskEditView = () => {
   const { id } = useParams();
@@ -19,7 +20,15 @@ export const TaskEditView = () => {
   const { tasks } = useTaskContext();
 
   const task = tasks.find((el) => el.id === id);
-  if (!task) return <CircularProgress />;
+  useEffect(() => {
+    if (!task) {
+      navigate('/notfound');
+    }
+  }, [task]);
+
+  if (!task) {
+    return <CircularProgress />;
+  }
   return (
     <BaseLayout>
       <Container maxWidth="md" style={{ marginTop: '32px' }}>
