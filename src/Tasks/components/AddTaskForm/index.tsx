@@ -3,10 +3,7 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { TextField, Button, Typography, Container, Box } from '@mui/material';
 import * as yup from 'yup';
-import { useAppDispatch } from '../../../App/hooks/redux';
-import { addTask } from '../../store';
-import { v4 as uuidv4 } from 'uuid';
-import { TaskStatus } from '../../models/enums';
+import { useTaskContext } from '../../context';
 
 interface FormData {
   title: string;
@@ -31,17 +28,10 @@ export const AddTaskForm = () => {
   } = useForm<FormData>({
     resolver: yupResolver(schema),
   });
-  const dispatch = useAppDispatch();
+  const { addTask } = useTaskContext();
 
   const onSubmit = (data: FormData) => {
-    const newTask = {
-      id: uuidv4(),
-      title: data.title,
-      description: data.description,
-      status: TaskStatus.ToDo,
-      created: new Date().toISOString(),
-    };
-    dispatch(addTask(newTask));
+    addTask(data);
   };
 
   return (

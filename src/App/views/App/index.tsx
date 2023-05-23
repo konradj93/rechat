@@ -2,14 +2,13 @@ import ErrorBoundary from '../../../Common/components/ErrorBoundary/ErrorBoundar
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import CssBaseline from '@mui/material/CssBaseline';
 import { APP_ROUTES } from '../../routes';
-import { Provider } from 'react-redux';
-import { store } from '../../store';
+import { TaskProvider } from '../../../Tasks/context';
 
 export const App = () => {
   return (
     <ErrorBoundary>
-      <Provider store={store}>
-        <CssBaseline />
+      <CssBaseline />
+      <TaskProvider>
         <BrowserRouter>
           <Routes>
             {APP_ROUTES.map((el) => (
@@ -17,7 +16,7 @@ export const App = () => {
             ))}
           </Routes>
         </BrowserRouter>
-      </Provider>
+      </TaskProvider>
     </ErrorBoundary>
   );
 };

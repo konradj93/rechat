@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import {
@@ -14,13 +14,13 @@ import {
   InputLabel,
 } from '@mui/material';
 import * as yup from 'yup';
-import { useAppDispatch } from '../../../App/hooks/redux';
-import { updateTask } from '../../store';
+
 import { Task } from '../../models';
 import { getAvailableStatuses } from '../../logic';
 import { TaskStatus } from '../../models/enums';
 import BorderColorIcon from '@mui/icons-material/BorderColor';
 import React from 'react';
+import { useTaskContext } from '../../context';
 
 interface FormData {
   title: string;
@@ -51,6 +51,7 @@ export const EditTaskForm = React.memo(
   ({ task, onCancel }: EditTaskFormProps) => {
     const [editedTask, setEditedTask] = useState<Task>(task);
     const isDisabled = task.status === TaskStatus.Deployed;
+    const { updateTask } = useTaskContext();
     const {
       register,
       handleSubmit,
@@ -63,8 +64,6 @@ export const EditTaskForm = React.memo(
         status: editedTask.status,
       },
     });
-    const dispatch = useAppDispatch();
-
     const handleStatusChange = (event: SelectChangeEvent<TaskStatus>) => {
       const status = event.target.value as TaskStatus;
       setEditedTask((prevTask) => ({
@@ -80,7 +79,7 @@ export const EditTaskForm = React.memo(
         description: data.description,
         status: data.status,
       };
-      dispatch(updateTask(updatedTask));
+      updateTask(updatedTask);
     };
     return (
       <Container maxWidth="md" style={{ marginTop: '32px' }}>

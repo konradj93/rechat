@@ -1,8 +1,7 @@
 import { Box, Grid, Typography } from '@mui/material';
-import { useAppSelector } from '../../../App/hooks/redux';
-import { selectAllTasks } from '../../store';
 import { SingleTask } from '../SingleTask';
 import { Task } from '../../models';
+import { useTaskContext } from '../../context';
 
 const BORDER_RADIUS_VALUE = '32px';
 
@@ -20,7 +19,8 @@ const renderTaskList = (tasks: Task[]) =>
   );
 
 export const TaskList = () => {
-  const tasks = useAppSelector(selectAllTasks);
+  const { tasks } = useTaskContext();
+
   return (
     <Box
       bgcolor="primary.dark"
