@@ -8,13 +8,15 @@ import { store } from '../../store';
 export const App = () => {
   return (
     <ErrorBoundary>
-      <Provider  store={store}>
-      <CssBaseline />
-      <BrowserRouter>
-        <Routes>
-          {APP_ROUTES.map(el => <Route path={el.path} key={el.path} element={el.component} />)}
-        </Routes>
-      </BrowserRouter>
+      <Provider store={store}>
+        <CssBaseline />
+        <BrowserRouter>
+          <Routes>
+            {APP_ROUTES.map((el) => (
+              <Route path={el.path} key={el.path} element={el.component} />
+            ))}
+          </Routes>
+        </BrowserRouter>
       </Provider>
     </ErrorBoundary>
   );

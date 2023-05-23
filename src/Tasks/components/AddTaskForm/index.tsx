@@ -9,13 +9,19 @@ import { v4 as uuidv4 } from 'uuid';
 import { TaskStatus } from '../../models/enums';
 
 interface FormData {
-    title: string;
-    description: string;
-  }
-  const schema = yup.object().shape({
-    title: yup.string().required('Title is required').min(3, 'Title must be at least 3 characters'),
-    description: yup.string().required('Description is required').min(3, 'Description must be at least 3 characters'),
-  });
+  title: string;
+  description: string;
+}
+const schema = yup.object().shape({
+  title: yup
+    .string()
+    .required('Title is required')
+    .min(3, 'Title must be at least 3 characters'),
+  description: yup
+    .string()
+    .required('Description is required')
+    .min(3, 'Description must be at least 3 characters'),
+});
 
 export const AddTaskForm = () => {
   const {
@@ -33,13 +39,13 @@ export const AddTaskForm = () => {
       title: data.title,
       description: data.description,
       status: TaskStatus.ToDo,
-      created: new Date(),
+      created: new Date().toISOString(),
     };
     dispatch(addTask(newTask));
   };
 
   return (
-    <Container maxWidth="md">
+    <Container maxWidth="md" style={{ marginTop: '32px' }}>
       <Box
         component="form"
         noValidate
@@ -47,37 +53,35 @@ export const AddTaskForm = () => {
         display="flex"
         flexDirection="column"
         gap={1}
-        onSubmit={handleSubmit(onSubmit)}
-      >
+        onSubmit={handleSubmit(onSubmit)}>
         <Typography variant="h5" component="h5">
           Add a new Task
         </Typography>
-         <TextField
-        label="Title"
-        variant="filled"
-        {...register('title')}
-        error={!!errors.title}
-        helperText={errors.title?.message}
-      />
-       <TextField
-        label="Description"
-        multiline
-        variant="filled"
-        rows={5}
-        {...register('description')}
-        error={!!errors.description}
-        helperText={errors.description?.message}
-      />
+        <TextField
+          label="Title"
+          variant="filled"
+          {...register('title')}
+          error={!!errors.title}
+          helperText={errors.title?.message}
+        />
+        <TextField
+          label="Description"
+          multiline
+          variant="filled"
+          rows={5}
+          {...register('description')}
+          error={!!errors.description}
+          helperText={errors.description?.message}
+        />
         <Button
           type="submit"
           variant="contained"
           size="large"
           startIcon={<AddIcon />}
-          disabled={!isValid}
-        >
+          disabled={!isValid}>
           Add
         </Button>
       </Box>
     </Container>
   );
-}
+};
