@@ -52,7 +52,7 @@ export const SingleTask: FC<SingleTaskProp> = ({ task }) => {
                   color: 'primary.dark',
                 }}
                 onClick={() => {
-                  navigate(`/task/${task.id}`);
+                  navigate(`/${task.id}/edit`);
                 }}>
                 <BorderColorIcon />
               </IconButton>
