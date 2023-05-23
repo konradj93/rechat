@@ -34,7 +34,7 @@ const taskSlice = createSlice({
 export const { addTask, updateTask, deleteTask } = taskSlice.actions;
 
 export const selectAllTasks = (state: RootState) => state.task.tasks;
-export const selectTaskById = (state: RootState, taskId: string) =>
+export const selectTaskById = (state: RootState, taskId?: string) =>
   state.task.tasks.find((task) => task.id === taskId);
 
 export const taskReducer = taskSlice.reducer;
